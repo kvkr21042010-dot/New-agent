@@ -77,7 +77,7 @@ export default function App() {
 
       // Configure the chat model
       chatRef.current = ai.chats.create({
-      model: 'gemini-3.1-pro-preview',
+      model: 'gemini-2.5-flash',
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         temperature: 0.7, // Adds slight natural warmth variation
@@ -236,19 +236,26 @@ export default function App() {
       // Speak final accumulated text if enabled
       speakText(accumulatedText);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat error:', error);
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      const errorText = `I'm so sorry, I ran into a little issue just now. (${errorMsg}) Could we try that again? 😔`;
+      let errorMsg = error instanceof Error ? error.message : String(error);
+      
+      let friendlyError = "I'm so sorry, I ran into a little issue just now. Could we try that again? 😔";
+      if (errorMsg.includes('429') || errorMsg.includes('Quota') || errorMsg.includes('RESOURCE_EXHAUSTED')) {
+        friendlyError = "Ah, it looks like your API key has reached its usage limit or quota. Could you check your AI Studio billing plan or try a new key?";
+      } else if (errorMsg.includes('API_KEY_INVALID') || errorMsg.includes('400') || errorMsg.includes('API key not valid')) {
+        friendlyError = "It seems the API key you used might be invalid or malformed. Make sure you pasted just one API key!";
+      }
+
       setMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 2).toString(),
           role: 'model',
-          text: errorText,
+          text: friendlyError,
         },
       ]);
-      speakText(errorText);
+      speakText(friendlyError);
     } finally {
       setIsTyping(false);
       // Refocus input if on desktop
