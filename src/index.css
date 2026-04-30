@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", ui-serif, Georgia, serif;
+}
+
+body {
+  background-color: #fcfbf9; /* Warm off-white */
+  color: #2c2a29;
+}
+
+/* Custom scrollbar for message area */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #e2dfd9;
+  border-radius: 10px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #d4d0c8;
+}
+
+/* Markdown typography styling */
+.markdown-body {
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.markdown-body p:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+.markdown-body strong {
+  font-weight: 600;
+}
+.markdown-body em {
+  font-style: italic;
+}
+.markdown-body a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
